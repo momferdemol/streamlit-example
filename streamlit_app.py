@@ -37,8 +37,9 @@ def get_parameter_from_store(name: str) -> str:
 
 
 secret = get_parameter_from_store("/streamlit/app/survey/api-key")
-st.write(secret)
-print("DOES THIS WORK?!")
+
+st.title("Running from a container..")
+st.write(f"FROM STORE: {secret}")
 
 
 num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
