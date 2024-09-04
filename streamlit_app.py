@@ -4,8 +4,13 @@ import pandas as pd
 import logging
 import streamlit as st
 from boto3 import client
-from botocore.expections import ClientError
-from mypy_boto3_ssm import SSMClient
+from botocore.exceptions import ClientError
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from mypy_boto3_ssm import SSMClient
+else:
+    SSMClient = object
 
 """
 # Welcome to Streamlit!
@@ -17,16 +22,23 @@ forums](https://discuss.streamlit.io).
 In the meantime, below is an example of what you can do with just a few lines of code:
 """
 
+ssm: SSMClient = client("ssm", region_name="eu-west-1")
+
 
 def get_parameter_from_store(name: str) -> str:
     try:
-        response = ssm.get_parameter(Name=name)
+        response = ssm.get_parameter(Name=name, WithDecryption=True)
         value = response["Parameter"]["Value"]
         return value
     except ClientError as err:
         msg = f"{err}{name}"
         logging.error(msg)
         raise SystemError from err
+
+
+secret = get_parameter_from_store("/streamlit/app/survey/api-key")
+st.write(secret)
+print("DOES THIS WORK?!")
 
 
 num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
@@ -58,6 +70,3 @@ st.altair_chart(
         size=alt.Size("rand", legend=None, scale=alt.Scale(range=[1, 150])),
     )
 )
-
-secret = get_parameter_from_store("/streamlit/app/survey/api-key")
-st.write(secret)

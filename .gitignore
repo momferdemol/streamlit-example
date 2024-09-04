@@ -22,5 +22,5 @@ cdk.out/
 .devenv*
 devenv.local.nix
 .envrc
-devenv.nix
-devenv.yaml
+# devenv.nix
+# devenv.yaml
