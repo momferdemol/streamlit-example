@@ -1,3 +1,5 @@
 altair
 pandas
 streamlit
+boto3
+mypy-boto3-ssm
