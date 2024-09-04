@@ -40,6 +40,7 @@ secret = get_parameter_from_store("/streamlit/app/survey/api-key")
 
 st.title("Running from a container..")
 st.write(f"FROM STORE: {secret}")
+logging.info("hello I am log?")
 
 
 num_points = st.slider("Number of points in spiral", 1, 10000, 1100)
